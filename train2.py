@@ -263,11 +263,8 @@ model.compile(
 history = model.fit(
 	train_dataset,
 	validation_data = valid_dataset,
-	#validation_steps = 20,
-	#validation_freq = 1,
 	callbacks = callbacks,
-	epochs = config['epochs'],
-	verbose = True
+	epochs = config['epochs']
 )
 
 #############################################################
