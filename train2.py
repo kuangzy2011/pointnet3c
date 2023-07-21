@@ -27,7 +27,7 @@ print('[debug] - DATA_DIR', DATA_DIR)
 config = {
     'train_ds' : '/kaggle/working/pointnet3/data/modelnet_train.tfrecord',
     'val_ds' : '/kaggle/working/pointnet3/data/modelnet_val.tfrecord',
-    'batch_size' : 32,
+    'batch_size' : 4,
     'lr' : 1e-3,
     'bn' : False,
     'log_dir' : 'modelnet_1',
@@ -261,10 +261,11 @@ model.compile(
 )
 
 history = model.fit(
-	train_dataset,
-	validation_data = valid_dataset,
-	callbacks = callbacks,
-	epochs = config['epochs']
+    train_dataset,
+    validation_data = valid_dataset,
+    callbacks = callbacks,
+    epochs = config['epochs'],
+    verbose = True
 )
 
 #############################################################
