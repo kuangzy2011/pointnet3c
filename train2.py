@@ -424,13 +424,7 @@ def get_batch_model(model, batch_size=1):
     model2 = PointConvModel(n_batch, config['bn'], num_classes=NUM_CLASSES)
     weights = model.get_weights()
     model2.build((n_batch, NUM_POINTS, 3))
-    '''
-    model2.compile(
-        optimizer=keras.optimizers.Adam(config['lr']),
-        loss=keras.losses.SparseCategoricalCrossentropy(),
-        metrics=[keras.metrics.SparseCategoricalAccuracy()]
-    )
-    '''
+
     model2.set_weights(weights)
     return model2
     
