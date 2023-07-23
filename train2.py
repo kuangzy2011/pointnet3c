@@ -25,7 +25,7 @@ print('[debug] - DATA_DIR', DATA_DIR)
 config = {
     'train_ds' : '/kaggle/working/pointnet3/data/modelnet_train.tfrecord',
     'val_ds' : '/kaggle/working/pointnet3/data/modelnet_val.tfrecord',
-    'batch_size' : 32,
+    'batch_size' : 8,
     'lr' : 1e-3,
     'bn' : False,
     'log_dir' : 'modelnet_1',
