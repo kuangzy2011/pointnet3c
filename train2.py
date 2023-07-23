@@ -355,6 +355,14 @@ class CLS_MSG_Model(Model):
 
 
 #################################################################################
+train_ds = train_dataset
+val_ds = valid_dataset
+test_ds = test_dataset
+print('[debug] - ------------------dataset detail--------------------')
+print('[debug] - >>train_ds', train_ds)
+print('[debug] - >>val_ds', val_ds)
+print('[debug] - >>test_ds', test_ds)
+
 
 model = CLS_MSG_Model(config['batch_size'], NUM_CLASSES, config['bn'])
 
@@ -374,8 +382,8 @@ model.compile(
 )
 
 history = model.fit(
-    train_dataset,
-    validation_data = valid_dataset,
+    train_ds,
+    validation_data = val_ds,
     callbacks = callbacks,
     epochs = config['epochs'],
     verbose = True
