@@ -29,7 +29,7 @@ config = {
     'lr' : 1e-3,
     'bn' : False,
     'log_dir' : 'modelnet_1',
-    'epochs' : 1
+    'epochs' : 5
 }
 print('[debug] - start train2 ==============================================================EPOCHS', config['epochs'])
 
@@ -372,6 +372,17 @@ history = model.fit(
 )
 
 model.save_weights('model_sign.model', overwrite=True, save_format='tf')
+#转tflite
+#https://blog.csdn.net/bjbz_cxy/article/details/120503631
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+converter.target_spec.supported_ops = [
+  tf.lite.OpsSet.TFLITE_BUILTINS, # enable TensorFlow Lite ops.
+  tf.lite.OpsSet.SELECT_TF_OPS # enable TensorFlow ops.
+]
+tflite_model = converter.convert()
+ 
+open("./model_binary.tflite","wb").write(tflite_model)
+
 #############################################################
 print('>>>>>>>>>>>>>>>>>>>>>>>>history<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 print(history.history)
@@ -385,7 +396,7 @@ test_loss, test_acc = model.evaluate(test_dataset, verbose=2)
 print('[debug] - Test loss:', test_loss)
 print('[debug] - Test accuracy:', test_acc)
 
-'''
+
 print('>>>>>>>>>>>>>>>>>>>>>>>>predict 1<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 
 data = test_dataset.take(1)
@@ -469,5 +480,5 @@ with printoptions(precision=6, suppress=True):
     print('[debug] - >>Y_pred', Y_pred)
 Y_pred = tf.math.argmax(Y_pred, -1)
 print('[debug] - predicts:', Y_pred)
-'''
+
 
