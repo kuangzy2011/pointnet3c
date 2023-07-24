@@ -371,6 +371,7 @@ history = model.fit(
     verbose = True
 )
 
+model.save_weights('model_sign.model', overwrite=True, save_format='tf')
 #############################################################
 print('>>>>>>>>>>>>>>>>>>>>>>>>history<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 print(history.history)
