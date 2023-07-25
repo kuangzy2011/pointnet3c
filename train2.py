@@ -350,12 +350,12 @@ model = CLS_MSG_Model(config['batch_size'], NUM_CLASSES, config['bn'])
 print('[debug] - ------------------build before--------------------config[batch_size]', config['batch_size'], ', NUM_POINTS', NUM_POINTS)
 model.build(input_shape=(config['batch_size'], NUM_POINTS, 3))
 print('[debug] - ------------------build after--------------------')
-#model._set_inputs(tf.keras.Input(shape=[None, NUM_POINTS, 3]))
+model._set_inputs(tf.keras.Input(shape=[None, NUM_POINTS, 3]))
 
 callbacks = [
 	keras.callbacks.EarlyStopping('val_sparse_categorical_accuracy', min_delta=0.01, patience=10),
 	keras.callbacks.TensorBoard('./logs/{}'.format(config['log_dir']), update_freq=50),
-	#keras.callbacks.ModelCheckpoint('./logs/{}/model/weights.ckpt'.format(config['log_dir']), 'val_sparse_categorical_accuracy', save_best_only=True)
+	keras.callbacks.ModelCheckpoint('./logs/{}/model/weights.ckpt'.format(config['log_dir']), 'val_sparse_categorical_accuracy', save_best_only=True)
 ]
 
 print(model.summary())
@@ -399,7 +399,7 @@ test_loss, test_acc = model.evaluate(test_dataset, verbose=2)
 print('[debug] - Test loss:', test_loss)
 print('[debug] - Test accuracy:', test_acc)
 
-
+'''
 print('>>>>>>>>>>>>>>>>>>>>>>>>predict 1<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 
 data = test_dataset.take(1)
@@ -483,5 +483,5 @@ with printoptions(precision=6, suppress=True):
     print('[debug] - >>Y_pred', Y_pred)
 Y_pred = tf.math.argmax(Y_pred, -1)
 print('[debug] - predicts:', Y_pred)
-
+'''
 
