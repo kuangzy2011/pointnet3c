@@ -348,8 +348,9 @@ print('[debug] - >>test_ds', test_ds)
 model = CLS_MSG_Model(config['batch_size'], NUM_CLASSES, config['bn'])
 
 print('[debug] - ------------------set input shape before--------------------config[batch_size]', config['batch_size'], ', NUM_POINTS', NUM_POINTS)
-#model.build(input_shape=(config['batch_size'], NUM_POINTS, 3))
-model._set_inputs(tf.keras.Input(shape=[config['batch_size'], NUM_POINTS, 3]))
+model.build(input_shape=(config['batch_size'], NUM_POINTS, 3))
+model.compute_output_shape(input_shape=(config['batch_size'], NUM_POINTS, 3))
+#model._set_inputs(tf.keras.Input(shape=[config['batch_size'], NUM_POINTS, 3]))
 print('[debug] - ------------------set input shape after--------------------')
 
 callbacks = [
