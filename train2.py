@@ -347,38 +347,44 @@ print('[debug] - >>test_ds', test_ds)
 
 model = CLS_MSG_Model(config['batch_size'], NUM_CLASSES, config['bn'])
 
-print('[debug] - ------------------set input shape before--------------------config[batch_size]', config['batch_size'], ', NUM_POINTS', NUM_POINTS)
-model.build(input_shape=(config['batch_size'], NUM_POINTS, 3))
-model.compute_output_shape(input_shape=(config['batch_size'], NUM_POINTS, 3))
-#model._set_inputs(tf.keras.Input(shape=[config['batch_size'], NUM_POINTS, 3]))
-print('[debug] - ------------------set input shape after--------------------')
+early_stop = EarlyStopping(
+    monitor='sparse_categorical_accuracy', min_delta=0, patience=5, verbose=0, mode='auto',
+    baseline=None, restore_best_weights=False
+)
+learning_rate_reduction = ReduceLROnPlateau(monitor='sparse_categorical_accuracy', 
+                                        patience=3, 
+                                        verbose=1, 
+                                        factor=0.5, 
+                                        min_lr=0.00001)
+checkpoint_path = "./logs/cp-{epoch:04d}.ckpt"
+checkpoint_dir = os.path.dirname(checkpoint_path)
+cp_callback = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, verbose=2, save_weights_only=True, save_freq='epoch')
+#model.save_weights(checkpoint_path.format(epoch=0))
 
-callbacks = [
-	keras.callbacks.EarlyStopping('val_sparse_categorical_accuracy', min_delta=0.01, patience=10),
-	keras.callbacks.TensorBoard('./logs/{}'.format(config['log_dir']), update_freq=50),
-	keras.callbacks.ModelCheckpoint('./logs/{}/model/weights.ckpt'.format(config['log_dir']), 'val_sparse_categorical_accuracy', save_best_only=True)
-]
-
+print('[debug] - ------------------build before--------------------')
+model.build((config['batch_size'], NUM_POINTS, 3))
+print('[debug] - ------------------build after--------------------')
 print(model.summary())
 
 model.compile(
-	optimizer=keras.optimizers.Adam(config['lr']),
-	loss=keras.losses.SparseCategoricalCrossentropy(),
-	metrics=[keras.metrics.SparseCategoricalAccuracy()]
+    optimizer=keras.optimizers.Adam(config['lr']),
+    loss=keras.losses.SparseCategoricalCrossentropy(),
+    metrics=[keras.metrics.SparseCategoricalAccuracy()]
 )
 
 history = model.fit(
     train_ds,
     validation_data = val_ds,
-    callbacks = callbacks,
+    callbacks=[learning_rate_reduction, early_stop, cp_callback],
     epochs = config['epochs'],
     verbose = True
 )
-
 #############################################################
 print('>>>>>>>>>>>>>>>>>>>>>>>>save model and do convertion<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 #tf.saved_model.save(model, '/kaggle/working/model')
 model.save_weights('model_sign.model', overwrite=True, save_format='tf')
+
+'''
 #转tflite
 #https://blog.csdn.net/bjbz_cxy/article/details/120503631
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
@@ -389,7 +395,7 @@ converter.target_spec.supported_ops = [
 tflite_model = converter.convert()
  
 open("./model_binary.tflite","wb").write(tflite_model)
-
+'''
 #############################################################
 print('>>>>>>>>>>>>>>>>>>>>>>>>history<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 print(history.history)
