@@ -371,18 +371,18 @@ history = model.fit(
     epochs = config['epochs'],
     verbose = True
 )
-
-model.save_weights('model_sign.model', overwrite=True, save_format='tf')
+tf.saved_model.save(model, '/kaggle/working/model')
+#model.save_weights('model_sign.model', overwrite=True, save_format='tf')
 #转tflite
 #https://blog.csdn.net/bjbz_cxy/article/details/120503631
-converter = tf.lite.TFLiteConverter.from_keras_model(model)
-converter.target_spec.supported_ops = [
-  tf.lite.OpsSet.TFLITE_BUILTINS, # enable TensorFlow Lite ops.
-  tf.lite.OpsSet.SELECT_TF_OPS # enable TensorFlow ops.
-]
-tflite_model = converter.convert()
+#converter = tf.lite.TFLiteConverter.from_keras_model(model)
+#converter.target_spec.supported_ops = [
+#  tf.lite.OpsSet.TFLITE_BUILTINS, # enable TensorFlow Lite ops.
+#  tf.lite.OpsSet.SELECT_TF_OPS # enable TensorFlow ops.
+#]
+#tflite_model = converter.convert()
  
-open("./model_binary.tflite","wb").write(tflite_model)
+#open("./model_binary.tflite","wb").write(tflite_model)
 
 #############################################################
 print('>>>>>>>>>>>>>>>>>>>>>>>>history<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
