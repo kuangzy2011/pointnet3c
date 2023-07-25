@@ -355,7 +355,7 @@ model._set_inputs(tf.keras.Input(shape=[config['batch_size'], NUM_POINTS, 3]))
 callbacks = [
 	keras.callbacks.EarlyStopping('val_sparse_categorical_accuracy', min_delta=0.01, patience=10),
 	keras.callbacks.TensorBoard('./logs/{}'.format(config['log_dir']), update_freq=50),
-	#keras.callbacks.ModelCheckpoint('./logs/{}/model/weights.ckpt'.format(config['log_dir']), 'val_sparse_categorical_accuracy', save_best_only=True)
+	keras.callbacks.ModelCheckpoint('./logs/{}/model/weights.ckpt'.format(config['log_dir']), 'val_sparse_categorical_accuracy', save_best_only=True)
 ]
 
 print(model.summary())
@@ -377,14 +377,14 @@ history = model.fit(
 model.save_weights('model_sign.model', overwrite=True, save_format='tf')
 #转tflite
 #https://blog.csdn.net/bjbz_cxy/article/details/120503631
-#converter = tf.lite.TFLiteConverter.from_keras_model(model)
-#converter.target_spec.supported_ops = [
-#  tf.lite.OpsSet.TFLITE_BUILTINS, # enable TensorFlow Lite ops.
-#  tf.lite.OpsSet.SELECT_TF_OPS # enable TensorFlow ops.
-#]
-#tflite_model = converter.convert()
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+converter.target_spec.supported_ops = [
+  tf.lite.OpsSet.TFLITE_BUILTINS, # enable TensorFlow Lite ops.
+  tf.lite.OpsSet.SELECT_TF_OPS # enable TensorFlow ops.
+]
+tflite_model = converter.convert()
  
-#open("./model_binary.tflite","wb").write(tflite_model)
+open("./model_binary.tflite","wb").write(tflite_model)
 
 #############################################################
 print('>>>>>>>>>>>>>>>>>>>>>>>>history<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
