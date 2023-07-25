@@ -29,7 +29,7 @@ config = {
     'lr' : 1e-3,
     'bn' : False,
     'log_dir' : 'modelnet_1',
-    'epochs' : 5
+    'epochs' : 1
 }
 print('[debug] - start train2 ==============================================================EPOCHS', config['epochs'])
 
@@ -352,9 +352,6 @@ callbacks = [
 	#keras.callbacks.ModelCheckpoint('./logs/{}/model/weights.ckpt'.format(config['log_dir']), 'val_sparse_categorical_accuracy', save_best_only=True)
 ]
 
-print('[debug] - ------------------build before--------------------')
-model.build(input_shape=(config['batch_size'], NUM_POINTS, 3))
-print('[debug] - ------------------build after--------------------')
 print(model.summary())
 
 model.compile(
@@ -362,6 +359,10 @@ model.compile(
 	loss=keras.losses.SparseCategoricalCrossentropy(),
 	metrics=[keras.metrics.SparseCategoricalAccuracy()]
 )
+
+print('[debug] - ------------------build before--------------------')
+model.build(input_shape=(config['batch_size'], NUM_POINTS, 3))
+print('[debug] - ------------------build after--------------------')
 
 history = model.fit(
     train_ds,
