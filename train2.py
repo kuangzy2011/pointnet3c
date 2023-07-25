@@ -261,7 +261,7 @@ class CLS_MSG_Model(Model):
         self.kernel_initializer = 'glorot_normal'
         self.kernel_regularizer = None
         self.init_network()
-        self._set_inputs(tf.TensorSpec([batch_size, 1071, 3], tf.float32, name='inputs'))
+        #self._set_inputs(tf.TensorSpec([batch_size, 1071, 3], tf.float32, name='inputs'))
 
     def init_network(self):
         print('[debug-CLS_MSG_Model-init_network] -----------------------------')
