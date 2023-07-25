@@ -425,7 +425,7 @@ test_loss, test_acc = model.evaluate(test_dataset, verbose=2)
 print('[debug] - Test loss:', test_loss)
 print('[debug] - Test accuracy:', test_acc)
 
-'''
+
 print('>>>>>>>>>>>>>>>>>>>>>>>>predict 1<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 
 data = test_dataset.take(1)
@@ -509,5 +509,5 @@ with printoptions(precision=6, suppress=True):
     print('[debug] - >>Y_pred', Y_pred)
 Y_pred = tf.math.argmax(Y_pred, -1)
 print('[debug] - predicts:', Y_pred)
-'''
+
 
