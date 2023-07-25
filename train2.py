@@ -7,6 +7,22 @@ import glob
 import trimesh
 import random
 import numpy as np
+import os
+import sys
+import glob
+import trimesh
+import random
+import numpy as np
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+from matplotlib import pyplot as plt
+from tensorflow.keras.optimizers import RMSprop
+from tensorflow.keras.callbacks import ReduceLROnPlateau
+from tensorflow.keras.metrics import top_k_categorical_accuracy
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import ModelCheckpoint
 
 sys.path.insert(0, './')
 
