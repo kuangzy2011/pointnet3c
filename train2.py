@@ -261,6 +261,7 @@ class CLS_MSG_Model(Model):
         self.kernel_initializer = 'glorot_normal'
         self.kernel_regularizer = None
         self.init_network()
+	self._set_inputs(tf.TensorSpec([batch_size, 1071, 3], tf.float32, name='inputs'))
 
     def init_network(self):
         print('[debug-CLS_MSG_Model-init_network] -----------------------------')
@@ -353,7 +354,7 @@ print('[debug] - ------------------build after--------------------')
 callbacks = [
 	keras.callbacks.EarlyStopping('val_sparse_categorical_accuracy', min_delta=0.01, patience=10),
 	keras.callbacks.TensorBoard('./logs/{}'.format(config['log_dir']), update_freq=50),
-	#keras.callbacks.ModelCheckpoint('./logs/{}/model/weights.ckpt'.format(config['log_dir']), 'val_sparse_categorical_accuracy', save_best_only=True)
+	keras.callbacks.ModelCheckpoint('./logs/{}/model/weights.ckpt'.format(config['log_dir']), 'val_sparse_categorical_accuracy', save_best_only=True)
 ]
 
 print(model.summary())
@@ -371,7 +372,7 @@ history = model.fit(
     epochs = config['epochs'],
     verbose = True
 )
-tf.saved_model.save(model, '/kaggle/working/model')
+#tf.saved_model.save(model, '/kaggle/working/model')
 #model.save_weights('model_sign.model', overwrite=True, save_format='tf')
 #转tflite
 #https://blog.csdn.net/bjbz_cxy/article/details/120503631
