@@ -346,7 +346,7 @@ print('[debug] - >>test_ds', test_ds)
 
 model = CLS_MSG_Model(config['batch_size'], NUM_CLASSES, config['bn'])
 
-print('[debug] - ------------------build before--------------------config['batch_size']', config['batch_size'], ', NUM_POINTS', NUM_POINTS)
+print('[debug] - ------------------build before--------------------config[batch_size]', config['batch_size'], ', NUM_POINTS', NUM_POINTS)
 model.build(input_shape=(config['batch_size'], NUM_POINTS, 3))
 print('[debug] - ------------------build after--------------------')
 
