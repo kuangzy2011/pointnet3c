@@ -375,6 +375,9 @@ history = model.fit(
     epochs = config['epochs'],
     verbose = True
 )
+
+#############################################################
+print('>>>>>>>>>>>>>>>>>>>>>>>>save model and do convertion<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 #tf.saved_model.save(model, '/kaggle/working/model')
 model.save_weights('model_sign.model', overwrite=True, save_format='tf')
 #转tflite
