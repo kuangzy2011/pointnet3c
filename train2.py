@@ -229,10 +229,12 @@ print('[debug] - test_labels, len', len(test_labels))
 print('[debug] - valid_points, len', len(valid_points))
 print('[debug] - valid_labels, len', len(valid_labels))
 
+'''
 train_points, train_labels = data_augment(train_points, train_labels, 10)
 print('[debug] - After data augment...')
 print('[debug] - train_points, len', len(train_points))
 print('[debug] - train_labels, len', len(train_labels))
+'''
 
 NUM_EXAMPLES = len(train_points)
 
