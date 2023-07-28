@@ -159,5 +159,6 @@ class DataSetHand():
         self.test_dataset = test_dataset.shuffle(len(test_points)).batch(self.batch_size, drop_remainder=True)
         self.valid_dataset = valid_dataset.shuffle(len(valid_points)).batch(self.batch_size, drop_remainder=True)
 
+        return self.train_dataset, self.test_dataset, self.valid_dataset, self.class_maps
 
         
