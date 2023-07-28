@@ -8,7 +8,7 @@ import numpy as np
 class DataSetHand():
     def __init__(self, datapath, batch_size, augment = 3):
         self.data_path = datapath
-        self.batch_size = batch_sie
+        self.batch_size = batch_size
         self.augment = augment
         self.num_points = 0
         self.class_maps = []
