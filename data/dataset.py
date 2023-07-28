@@ -148,14 +148,14 @@ class DataSetHand():
         return points, label
 
     def dataset(self):
-        train_points, test_points, valid_points, train_labels, test_labels, valid_labels, self.class_maps = parse_dataset()
-        train_points, train_labels = data_augment(train_points, train_labels, self.argument)
+        train_points, test_points, valid_points, train_labels, test_labels, valid_labels, self.class_maps = self.parse_dataset()
+        train_points, train_labels = self.data_augment(train_points, train_labels, self.argument)
       
         self.train_dataset = tf.data.Dataset.from_tensor_slices((train_points, train_labels))
         self.test_dataset = tf.data.Dataset.from_tensor_slices((test_points, test_labels))
         self.valid_dataset = tf.data.Dataset.from_tensor_slices((valid_points, valid_labels))
 
-        self.train_dataset = train_dataset.shuffle(len(train_points)).map(augment).batch(self.batch_size, drop_remainder=True)
+        self.train_dataset = train_dataset.shuffle(len(train_points)).map(self.augment).batch(self.batch_size, drop_remainder=True)
         self.test_dataset = test_dataset.shuffle(len(test_points)).batch(self.batch_size, drop_remainder=True)
         self.valid_dataset = valid_dataset.shuffle(len(valid_points)).batch(self.batch_size, drop_remainder=True)
 
