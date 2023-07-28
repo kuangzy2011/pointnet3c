@@ -60,7 +60,9 @@ print('[debug] - class maps', class_maps)
 print('[debug] - num examples', dataset.num_examples)
 print('[debug] - num points', dataset.num_points)
 print('[debug] - num classes', dataset.num_classes)
-
+NUM_EXAMPLES = dataset.num_examples
+NUM_POINTS = dataset.num_points
+NUM_CLASSES = dataset.num_classes
 
 #################################################################################
 import tensorflow as tf
