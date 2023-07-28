@@ -4,12 +4,13 @@ import glob
 import trimesh
 import random
 import numpy as np
+import tensorflow as tf
 
 class DataSetHand():
-    def __init__(self, datapath, batch_size, augment = 3):
+    def __init__(self, datapath, batch_size, zoomin = 3):
         self.data_path = datapath
         self.batch_size = batch_size
-        self.augment = augment
+        self.zoomin = zoomin
         self.num_points = 0
         self.class_maps = []
       
@@ -22,7 +23,7 @@ class DataSetHand():
         print('[debug] - label:', d)
         return d
 
-    def generate_key(l, k):
+    def generate_key(self, l, k):
         #ret = np.zeros(l)
         #ret[k] = 1
         #return ret
@@ -44,7 +45,7 @@ class DataSetHand():
         sublist_4 = sublist_1[offset:]
         return sublist_2,sublist_4,sublist_3
     
-    def parse_dataset():
+    def parse_dataset(self):
         train_points = []
         train_labels = []
         test_points = []
@@ -74,7 +75,7 @@ class DataSetHand():
     
         for key in class_map.keys():
             print("[debug] - processing class: {}".format(class_map[key]))
-            key_value = generate_key(num_class, key)
+            key_value = self.generate_key(num_class, key)
             # store folder name with ID so we can retrieve later
             #class_map[i] = folder.split("/")[-1]
             
@@ -117,7 +118,7 @@ class DataSetHand():
         )
 
     # 数据增强, 抖动增加数据
-    def data_augment(points, labels, zoomin=10):
+    def data_augment(self, points, labels, zoomin=10):
         ret_points = points
         ret_labels = labels
         for i in range(zoomin):
@@ -140,7 +141,7 @@ class DataSetHand():
         return ret_points, ret_labels
     
     # 抖动 +　重新排序
-    def augment(points, label):
+    def augment(self, points, label):
         # jitter points
         #points += tf.random.uniform(points.shape, -0.0005, 0.0005, dtype=tf.float64)
         # shuffle points, 按行打乱
@@ -149,16 +150,20 @@ class DataSetHand():
 
     def dataset(self):
         train_points, test_points, valid_points, train_labels, test_labels, valid_labels, self.class_maps = self.parse_dataset()
-        train_points, train_labels = self.data_augment(train_points, train_labels, self.argument)
-      
-        self.train_dataset = tf.data.Dataset.from_tensor_slices((train_points, train_labels))
-        self.test_dataset = tf.data.Dataset.from_tensor_slices((test_points, test_labels))
-        self.valid_dataset = tf.data.Dataset.from_tensor_slices((valid_points, valid_labels))
+        train_points, train_labels = self.data_augment(train_points, train_labels, self.zoomin)
+        print('[debug] - After data augment...')
+        print('[debug] - train_points, len', len(train_points), ', train_labels, len', len(train_labels))
+        print('[debug] - test_points, len', len(test_points), ', test_labels, len', len(test_labels))
+        print('[debug] - valid_points, len', len(valid_points), ', valid_labels, len', len(valid_labels))
 
+        train_dataset = tf.data.Dataset.from_tensor_slices((train_points, train_labels))
+        test_dataset = tf.data.Dataset.from_tensor_slices((test_points, test_labels))
+        valid_dataset = tf.data.Dataset.from_tensor_slices((valid_points, valid_labels))
+
+        self.num_examples = len(train_points)
+        self.num_classes = len(self.class_maps)
         self.train_dataset = train_dataset.shuffle(len(train_points)).map(self.augment).batch(self.batch_size, drop_remainder=True)
         self.test_dataset = test_dataset.shuffle(len(test_points)).batch(self.batch_size, drop_remainder=True)
         self.valid_dataset = valid_dataset.shuffle(len(valid_points)).batch(self.batch_size, drop_remainder=True)
 
         return self.train_dataset, self.test_dataset, self.valid_dataset, self.class_maps
-
-        
