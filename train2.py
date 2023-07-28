@@ -403,18 +403,21 @@ print('>>>>>>>>>>>>>>>>>>>>>>>>save model and do convertion<<<<<<<<<<<<<<<<<<<<<
 #tf.saved_model.save(model, '/kaggle/working/model')
 model.save_weights('model_sign.model', overwrite=True, save_format='tf')
 
-'''
+print('>>>>>>>>>>>>>>>>>>>>>>>>start convert tflite<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+
 #转tflite
 #https://blog.csdn.net/bjbz_cxy/article/details/120503631
-converter = tf.lite.TFLiteConverter.from_keras_model(model)
+converter = tf.lite.TFLiteConverter.from_keras_model(model_tflite)
+converter.optimizations = [tf.lite.Optimize.DEFAULT]
+converter.experimental_new_converter = True
+converter.allow_custom_ops = True
 converter.target_spec.supported_ops = [
-  tf.lite.OpsSet.TFLITE_BUILTINS, # enable TensorFlow Lite ops.
-  tf.lite.OpsSet.SELECT_TF_OPS # enable TensorFlow ops.
+    tf.lite.OpsSet.TFLITE_BUILTINS,
+    tf.lite.OpsSet.SELECT_TF_OPS
 ]
 tflite_model = converter.convert()
  
 open("./model_binary.tflite","wb").write(tflite_model)
-'''
 #############################################################
 print('>>>>>>>>>>>>>>>>>>>>>>>>history<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 print(history.history)
@@ -512,5 +515,7 @@ with printoptions(precision=6, suppress=True):
     print('[debug] - >>Y_pred', Y_pred)
 Y_pred = tf.math.argmax(Y_pred, -1)
 print('[debug] - predicts:', Y_pred)
+
+
 
 
