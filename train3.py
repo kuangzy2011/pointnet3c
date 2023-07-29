@@ -172,6 +172,12 @@ print('[debug] - >>test_ds', test_ds)
 
 model = CLS_MSG_Model(config['batch_size'], NUM_CLASSES, config['bn'])
 
+print('[debug] - ------------------build before--------------------')
+model.build((config['batch_size'], NUM_POINTS, 3))
+model.compute_output_shape(input_shape=(None, config['batch_size'], NUM_POINTS, 3))
+print('[debug] - ------------------build after--------------------')
+print(model.summary())
+
 early_stop = EarlyStopping(
     monitor='sparse_categorical_accuracy', min_delta=0, patience=5, verbose=0, mode='auto',
     baseline=None, restore_best_weights=False
@@ -185,11 +191,6 @@ checkpoint_path = "./logs/cp-{epoch:04d}.ckpt"
 checkpoint_dir = os.path.dirname(checkpoint_path)
 cp_callback = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, verbose=2, save_weights_only=True, save_freq='epoch')
 #model.save_weights(checkpoint_path.format(epoch=0))
-
-print('[debug] - ------------------build before--------------------')
-model.build((config['batch_size'], NUM_POINTS, 3))
-print('[debug] - ------------------build after--------------------')
-print(model.summary())
 
 model.compile(
     optimizer=keras.optimizers.Adam(config['lr']),
