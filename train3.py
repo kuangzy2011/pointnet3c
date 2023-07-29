@@ -174,7 +174,7 @@ model = CLS_MSG_Model(config['batch_size'], NUM_CLASSES, config['bn'])
 
 print('[debug] - ------------------build before--------------------')
 model.build((config['batch_size'], NUM_POINTS, 3))
-model.compute_output_shape(input_shape=(None, config['batch_size'], NUM_POINTS, 3))
+model.compute_output_shape(input_shape=(config['batch_size'], NUM_POINTS, 3))
 print('[debug] - ------------------build after--------------------')
 print(model.summary())
 
