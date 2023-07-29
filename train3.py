@@ -50,7 +50,7 @@ config = {
 print('[debug] - start train2 ==============================================================EPOCHS', config['epochs'])
 from data.dataset import DataSetHand
 
-dataset = DataSetHand(DATA_DIR, 32, 3)
+dataset = DataSetHand(DATA_DIR, config['batch_size'], 3)
 train_dataset, test_dataset, valid_dataset, class_maps = dataset.dataset()
 
 print('[debug] - train_dataset', train_dataset)
