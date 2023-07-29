@@ -197,6 +197,7 @@ model.compile(
     metrics=[keras.metrics.SparseCategoricalAccuracy()]
 )
 
+print('>>>>>>>>>>>>>>>>>>>>>>>>start to train<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 history = model.fit(
     train_ds,
     validation_data = val_ds,
