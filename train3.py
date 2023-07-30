@@ -253,6 +253,8 @@ print('points shape:', points.shape)
 print('labels shape:', labels.shape)
 print('labels:', labels)
 
+model.build((config['batch_size'], NUM_POINTS, 3))
+model.compute_output_shape(input_shape=(config['batch_size'], NUM_POINTS, 3))
 
 # run test data through model
 preds = model.predict(points)
