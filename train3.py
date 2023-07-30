@@ -209,8 +209,8 @@ history = model.fit(
 #############################################################
 print('>>>>>>>>>>>>>>>>>>>>>>>>save model and do convertion<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 #tf.saved_model.save(model, '/kaggle/working/model')
-#model.save_weights('model_sign.model', overwrite=True, save_format='tf')
-model.save('model_sign.model', save_format='tf')
+model.save_weights('model_sign.model', overwrite=True, save_format='tf')
+#model.save('model_sign.model', save_format='tf')
 model_tflite = model
 
 print('>>>>>>>>>>>>>>>>>>>>>>>>start convert tflite<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
